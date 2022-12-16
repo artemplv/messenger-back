@@ -25,8 +25,8 @@ app.get('/health', (req, res) => {
   res.send("I'm working");
 });
 
-app.listen(config.port || 8080, () => {
-  console.info(`Listening on *:${config.port || 8080}`);
+app.listen(config.port, () => {
+  console.info(`Listening on *:${config.port}`);
 });
 
 process.on('unhandledRejection', (error) => {
