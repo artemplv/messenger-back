@@ -78,6 +78,28 @@ const authController = {
         accessToken: token,
       });
   },
+
+  getUser: async (req, res) => {
+    const {
+      user,
+    } = req;
+
+    try {
+      const userData = await User.findById(user.id);
+      res.status(200).send({
+        data: {
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          username: userData.username,
+          role: userData.role,
+          createdAt: userData.createdAt,
+        }
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).send({ message: err });
+    }
+  },
 };
 
 module.exports = authController;
