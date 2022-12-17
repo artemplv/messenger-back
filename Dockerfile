@@ -6,8 +6,10 @@ COPY package.json /opt/messenger-back
 COPY package-lock.json /opt/messenger-back
 COPY . /opt/messenger-back
 
-EXPOSE 8080
+ARG SERVER_PORT
+
+EXPOSE ${SERVER_PORT}
 
 RUN npm install
 
-CMD ["npx", "nodemon", "./src/index.js"]
+CMD ["npm", "run", "start"]
