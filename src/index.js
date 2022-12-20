@@ -1,18 +1,31 @@
 const express = require('express');
+const cors = require('cors');
 const dotenv = require('dotenv');
+const http = require('http');
+const WebSocket = require('ws');
+
+const app = express();
+
+const server = http.createServer(app);
 
 const config = require('./config/config');
 const dbconnect = require('./common/dbconnect');
+const connectSocket = require('./common/connectSocket');
 const routes = require('./routes');
 
 const verifyToken = require('./middlewares/verifyToken');
 
 dotenv.config();
 
+const wss = new WebSocket.Server({
+  server,
+  path: '/ws/chat',
+});
+
 dbconnect();
+connectSocket(wss);
 
-const app = express();
-
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({
   extended: true,
@@ -25,7 +38,7 @@ app.get('/health', (req, res) => {
   res.send("I'm working");
 });
 
-app.listen(config.port, () => {
+server.listen(config.port, () => {
   console.info(`Listening on *:${config.port}`);
 });
 

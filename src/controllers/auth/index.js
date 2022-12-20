@@ -26,8 +26,25 @@ const authController = {
     });
 
     try {
-      await user.save();
-      res.status(201).send({ message: 'user registered' });
+      const newUser = await user.save();
+      
+      const token = jwt.sign({
+        id: newUser.id,
+      }, jwtSecret, {
+        expiresIn: jwtExpiresIn,
+      });
+  
+      res.status(200)
+        .send({
+          user: {
+            id: newUser._id, // eslint-disable-line no-underscore-dangle
+            username: newUser.username,
+            firstName: newUser.firstName,
+            lastName: newUser.lastName,
+          },
+          message: 'Signup successfull',
+          accessToken: token,
+        });
     } catch (err) {
       console.error(err);
       res.status(500).send({ message: err });
@@ -36,11 +53,11 @@ const authController = {
 
   signin: async (req, res) => {
     const {
-      username,
+      login,
       password,
     } = req.body;
 
-    const user = await User.findOne({ username }).exec();
+    const user = await User.findOne({ username: login }).exec();
     if (!user) {
       res.status(404).send({ message: 'User not found' });
       return;
@@ -69,7 +86,7 @@ const authController = {
     res.status(200)
       .send({
         user: {
-          id: user._id, // eslint-disable-line no-underscore-dangle
+          id: user._id,
           username: user.username,
           firstName: user.firstName,
           lastName: user.lastName,
@@ -87,13 +104,12 @@ const authController = {
     try {
       const userData = await User.findById(user.id);
       res.status(200).send({
-        data: {
-          firstName: userData.firstName,
-          lastName: userData.lastName,
-          username: userData.username,
-          role: userData.role,
-          createdAt: userData.createdAt,
-        }
+        id: userData.id,
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        username: userData.username,
+        role: userData.role,
+        createdAt: userData.createdAt,
       });
     } catch (err) {
       console.error(err);

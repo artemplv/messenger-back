@@ -8,7 +8,7 @@ const getChats = async (req, res) => {
 
   try {
     const userChats = await Chat.find({ userIds: mongoose.Types.ObjectId(user.id) });
-    res.status(200).send({ data: userChats });
+    res.status(200).send(userChats);
   } catch (err) {
     console.error(err);
     res.status(500).send({ message: err });

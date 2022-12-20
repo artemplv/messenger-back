@@ -20,7 +20,7 @@ const createChat = async (req, res) => {
 
   try {
     const chatCreated = await newChat.save();
-    res.status(201).send({ data: chatCreated });
+    res.status(201).send(chatCreated);
   } catch (err) {
     console.error(err);
     res.status(500).send({ message: err });

@@ -2,16 +2,17 @@ const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
-const chatSchema = new Schema({
-  name: {
+const messageSchema = new Schema({
+  content: {
     type: String,
     trim: true,
+    required: true,
   },
-  userIds: {
-    type: [mongoose.ObjectId],
-    ref: 'User',
+  chatId: {
+    type: mongoose.ObjectId,
+    ref: 'Chat',
   },
-  chatInitiator: {
+  userId: {
     type: mongoose.ObjectId,
     ref: 'User',
   },
@@ -21,8 +22,4 @@ const chatSchema = new Schema({
   },
 });
 
-chatSchema.set('toJSON', {
-  virtuals: true
-});
-
-module.exports = mongoose.model('Chat', chatSchema);
+module.exports = mongoose.model('Message', messageSchema);
