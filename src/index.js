@@ -11,6 +11,7 @@ const server = http.createServer(app);
 const config = require('./config/config');
 const dbconnect = require('./common/dbconnect');
 const connectSocket = require('./common/connectSocket');
+const launchSocketConnChecks = require('./common/launchSocketConnChecks');
 const routes = require('./routes');
 
 const verifyToken = require('./middlewares/verifyToken');
@@ -24,6 +25,7 @@ const wss = new WebSocket.Server({
 
 dbconnect();
 connectSocket(wss);
+launchSocketConnChecks(wss);
 
 app.use(cors());
 app.use(express.json());

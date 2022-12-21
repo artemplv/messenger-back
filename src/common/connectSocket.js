@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 const url = require('url');
 
 const verifyToken = require('../middlewares/verifyChatSocketToken');
@@ -12,7 +13,7 @@ const messageTypesHandlers = {
 };
 
 const connectSocket = (wss) => wss.on('connection', async (socket, request) => {
-  console.log('ESTABLISHED SOCKET CONNECTION');
+  socket.isAlive = true;
 
   const {
     chatId,
@@ -25,6 +26,10 @@ const connectSocket = (wss) => wss.on('connection', async (socket, request) => {
     return;
   }
 
+  socket.on('pong', () => {
+    socket.isAlive = true;
+  });
+
   socket.userId = userId;
   socket.chatId = chatId;
 
@@ -36,7 +41,9 @@ const connectSocket = (wss) => wss.on('connection', async (socket, request) => {
 
     const handler = messageTypesHandlers[type];
 
-    handler && handler(wss, socket)(content);
+    if (handler) {
+      handler(wss, socket)(content);
+    }
   });
 });
 
