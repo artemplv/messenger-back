@@ -17,6 +17,15 @@ const userSchema = new Schema({
     trim: true,
     required: [true, 'username not provided'],
   },
+  email: {
+    type: String,
+    lowercase: true,
+    trim: true,
+  },
+  phone: {
+    type: String,
+    trim: true,
+  },
   role: {
     type: String,
     enum: ['normal', 'admin'],
@@ -33,7 +42,12 @@ const userSchema = new Schema({
 });
 
 userSchema.set('toJSON', {
-  virtuals: true
+  virtuals: true,
+  transform: (_, converted) => {
+    delete converted.__v;
+    delete converted._id;
+  },
 });
+
 
 module.exports = mongoose.model('User', userSchema);

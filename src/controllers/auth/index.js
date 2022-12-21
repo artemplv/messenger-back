@@ -101,16 +101,11 @@ const authController = {
       user,
     } = req;
 
+    const fieldsToSelect = 'id firstName lastName username email phone';
+
     try {
-      const userData = await User.findById(user.id);
-      res.status(200).send({
-        id: userData.id,
-        firstName: userData.firstName,
-        lastName: userData.lastName,
-        username: userData.username,
-        role: userData.role,
-        createdAt: userData.createdAt,
-      });
+      const userData = await User.findById(user.id, fieldsToSelect);
+      res.status(200).send(userData);
     } catch (err) {
       console.error(err);
       res.status(500).send({ message: err });

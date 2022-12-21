@@ -21,8 +21,20 @@ const chatSchema = new Schema({
   },
 });
 
+chatSchema.virtual('lastMessage', {
+  ref: 'Message',
+  localField: '_id',
+  foreignField: 'chatId',
+  options: { sort: { 'createdAt': -1 }, limit: 1 },
+  justOne: true,
+});
+
 chatSchema.set('toJSON', {
-  virtuals: true
+  virtuals: true,
+  transform: (_, converted) => {
+    delete converted.__v;
+    delete converted._id;
+  },
 });
 
 module.exports = mongoose.model('Chat', chatSchema);
