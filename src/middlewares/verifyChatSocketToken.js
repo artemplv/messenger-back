@@ -25,9 +25,8 @@ const verifyToken = async (token, chatId) => {
 
     if (chat) {
       return user.id;
-    } else {
-      return false;
     }
+    return false;
   } catch (error) {
     console.error(error);
     return false;

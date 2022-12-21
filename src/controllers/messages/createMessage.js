@@ -1,9 +1,9 @@
 const Message = require('../../models/message');
 
 const createMessage = (wss, socket) => async (content) => {
-  const userId = socket.userId;
-  const chatId = socket.chatId;
-  
+  const { userId } = socket;
+  const { chatId } = socket;
+
   const newMessage = new Message({
     content,
     chatId,
@@ -12,7 +12,7 @@ const createMessage = (wss, socket) => async (content) => {
 
   try {
     await newMessage.save();
-    
+
     const dataToSend = {
       content,
       userId,

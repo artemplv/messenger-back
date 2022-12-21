@@ -30,7 +30,7 @@ const changePassword = async (req, res) => {
     }
 
     currentUser.password = bcrypt.hashSync(newPassword, 8);
-    
+
     await currentUser.save();
     res.status(200).send();
   } catch (err) {

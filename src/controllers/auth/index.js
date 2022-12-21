@@ -27,17 +27,17 @@ const authController = {
 
     try {
       const newUser = await user.save();
-      
+
       const token = jwt.sign({
         id: newUser.id,
       }, jwtSecret, {
         expiresIn: jwtExpiresIn,
       });
-  
+
       res.status(200)
         .send({
           user: {
-            id: newUser._id, // eslint-disable-line no-underscore-dangle
+            id: newUser.id,
             username: newUser.username,
             firstName: newUser.firstName,
             lastName: newUser.lastName,
@@ -86,7 +86,7 @@ const authController = {
     res.status(200)
       .send({
         user: {
-          id: user._id,
+          id: user.id,
           username: user.username,
           firstName: user.firstName,
           lastName: user.lastName,

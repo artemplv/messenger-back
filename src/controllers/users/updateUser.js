@@ -10,7 +10,7 @@ const updateUser = async (req, res) => {
 
   try {
     const currentUser = await User.findById(user.id);
-    
+
     updateValuesKeys.forEach((key) => {
       const updateValue = body[key];
       if (updateValue) {

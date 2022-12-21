@@ -9,7 +9,7 @@ const getChats = async (req, res) => {
   try {
     const userChats = await Chat.find({ userIds: mongoose.Types.ObjectId(user.id) })
       .populate('lastMessage', 'userId content createdAt');
-    
+
     res.status(200).send(userChats);
   } catch (err) {
     console.error(err);
