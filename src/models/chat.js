@@ -25,7 +25,7 @@ chatSchema.virtual('lastMessage', {
   ref: 'Message',
   localField: '_id',
   foreignField: 'chatId',
-  options: { sort: { createdAt: -1 }, limit: 1 },
+  options: { sort: { createdAt: 'desc' } },
   justOne: true,
 });
 
