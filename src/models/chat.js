@@ -15,18 +15,14 @@ const chatSchema = new Schema({
     type: mongoose.ObjectId,
     ref: 'User',
   },
+  lastMessage: {
+    type: mongoose.ObjectId,
+    ref: 'Message',
+  },
   createdAt: {
     type: Date,
     default: Date.now,
   },
-});
-
-chatSchema.virtual('lastMessage', {
-  ref: 'Message',
-  localField: '_id',
-  foreignField: 'chatId',
-  options: { sort: { createdAt: 'desc' } },
-  justOne: true,
 });
 
 chatSchema.set('toJSON', {

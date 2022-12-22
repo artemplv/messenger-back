@@ -1,17 +1,20 @@
 const Message = require('../../models/message');
+const Chat = require('../../models/chat');
 
 const createMessage = (wss, socket) => async (content) => {
-  const { userId } = socket;
-  const { chatId } = socket;
+  const {
+    userId,
+    chatId,
+  } = socket;
 
-  const newMessage = new Message({
+  const message = new Message({
     content,
     chatId,
     userId,
   });
 
   try {
-    await newMessage.save();
+    const newMessage = await message.save();
 
     const dataToSend = {
       content,
@@ -23,6 +26,8 @@ const createMessage = (wss, socket) => async (content) => {
         client.send(JSON.stringify(dataToSend));
       }
     });
+
+    Chat.findByIdAndUpdate(chatId, { lastMessage: newMessage.id }).exec();
   } catch (err) {
     console.error(err);
   }
