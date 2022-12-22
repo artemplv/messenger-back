@@ -10,6 +10,7 @@ const chatSchema = new Schema({
   userIds: {
     type: [mongoose.ObjectId],
     ref: 'User',
+    // alias: 'users',
   },
   chatInitiator: {
     type: mongoose.ObjectId,
@@ -23,6 +24,12 @@ const chatSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+});
+
+chatSchema.virtual('users', {
+  ref: 'User',
+  localField: 'userIds',
+  foreignField: '_id',
 });
 
 chatSchema.set('toJSON', {

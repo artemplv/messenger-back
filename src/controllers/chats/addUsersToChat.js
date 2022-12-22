@@ -6,6 +6,8 @@ const addUsersToChat = async (req, res) => {
   const {
     body: {
       users,
+    },
+    params: {
       chatId,
     },
   } = req;

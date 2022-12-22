@@ -18,15 +18,12 @@ router
   );
 
 router
-  .route(`${path}/users`)
+  .route(`${path}/:chatId`)
   .all(
     verifyChatAccess,
   )
-  .put(
-    asyncHandler(chatsController.addToChat),
-  )
-  .delete(
-    asyncHandler(chatsController.removeUsers),
+  .get(
+    asyncHandler(chatsController.getById),
   );
 
 router
@@ -36,6 +33,12 @@ router
   )
   .get(
     asyncHandler(chatsController.getUsers),
+  )
+  .put(
+    asyncHandler(chatsController.addToChat),
+  )
+  .delete(
+    asyncHandler(chatsController.removeUsers),
   );
 
 module.exports = router;
