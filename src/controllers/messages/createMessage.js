@@ -1,10 +1,9 @@
 const Message = require('../../models/message');
 const Chat = require('../../models/chat');
 
-const createMessage = (wss, socket) => async (content) => {
+const createMessage = (wss, socket) => async (chatId, content) => {
   const {
     userId,
-    chatId,
   } = socket;
 
   const message = new Message({
@@ -16,18 +15,25 @@ const createMessage = (wss, socket) => async (content) => {
   try {
     const newMessage = await message.save();
 
+    Chat.findByIdAndUpdate(chatId, { lastMessage: newMessage.id }).exec();
+
+    const chat = await Chat.findById(chatId, 'userIds');
+
     const dataToSend = {
-      content,
-      userId,
+      type: 'new message',
+      chatId,
+      data: {
+        content,
+        userId,
+        createdAt: newMessage.createdAt,
+      },
     };
 
     wss.clients.forEach((client) => {
-      if (client.chatId === chatId) {
+      if (chat.userIds.includes(client.userId)) {
         client.send(JSON.stringify(dataToSend));
       }
     });
-
-    Chat.findByIdAndUpdate(chatId, { lastMessage: newMessage.id }).exec();
   } catch (err) {
     console.error(err);
   }

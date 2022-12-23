@@ -13,14 +13,15 @@ const messageTypesHandlers = {
 };
 
 const connectSocket = (wss) => wss.on('connection', async (socket, request) => {
+  console.info('New socket connection');
+
   socket.isAlive = true;
 
   const {
-    chatId,
     token,
   } = url.parse(request.url, true).query;
 
-  const userId = await verifyToken(token, chatId);
+  const userId = await verifyToken(token);
   if (!userId) {
     socket.terminate();
     return;
@@ -31,18 +32,24 @@ const connectSocket = (wss) => wss.on('connection', async (socket, request) => {
   });
 
   socket.userId = userId;
-  socket.chatId = chatId;
 
-  socket.on('message', (message) => {
+  socket.on('message', async (message) => {
     const {
+      chatId,
       type,
       content,
     } = JSON.parse(message);
 
+    const canAccessChat = await verifyToken(token, chatId);
+
+    if (!canAccessChat) {
+      return;
+    }
+
     const handler = messageTypesHandlers[type];
 
     if (handler) {
-      handler(wss, socket)(content);
+      handler(wss, socket)(chatId, content);
     }
   });
 });

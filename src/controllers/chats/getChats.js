@@ -1,6 +1,12 @@
 const mongoose = require('mongoose');
 const Chat = require('../../models/chat');
 
+const sortOptions = {
+  lastMessage: 'desc',
+  'lastMessage.createdAt': 'desc',
+  createdAt: 'desc',
+};
+
 const getChats = async (req, res) => {
   const {
     user,
@@ -8,7 +14,7 @@ const getChats = async (req, res) => {
 
   try {
     const userChats = await Chat.find({ userIds: mongoose.Types.ObjectId(user.id) })
-      .populate('lastMessage', 'userId content createdAt');
+      .populate('lastMessage', 'userId content createdAt').sort(sortOptions);
 
     res.status(200).send(userChats);
   } catch (err) {

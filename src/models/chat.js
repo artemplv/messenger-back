@@ -6,11 +6,11 @@ const chatSchema = new Schema({
   name: {
     type: String,
     trim: true,
+    required: true,
   },
   userIds: {
     type: [mongoose.ObjectId],
     ref: 'User',
-    // alias: 'users',
   },
   chatInitiator: {
     type: mongoose.ObjectId,

@@ -1,15 +1,17 @@
 const mongoose = require('mongoose');
 const Message = require('../../models/message');
 
-const getMessages = (_, socket) => async () => {
-  const { chatId } = socket;
-
+const getMessages = (_, socket) => async (chatId) => {
   try {
     const messages = await Message.find({
       chatId: mongoose.Types.ObjectId(chatId),
     }, '-_id').sort({ createdAt: 'desc' });
 
-    socket.send(JSON.stringify(messages));
+    socket.send(JSON.stringify({
+      type: 'old messages',
+      chatId,
+      data: messages,
+    }));
   } catch (error) {
     console.error(error);
   }

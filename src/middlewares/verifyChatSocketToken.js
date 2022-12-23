@@ -6,7 +6,7 @@ const User = require('../models/user');
 const Chat = require('../models/chat');
 
 const verifyToken = async (token, chatId) => {
-  if (!token || token === 'null' || !chatId) {
+  if (!token || token === 'null') {
     return false;
   }
 
@@ -16,6 +16,10 @@ const verifyToken = async (token, chatId) => {
     const user = await User.findById(decoded.id).exec();
     if (!user) {
       return false;
+    }
+
+    if (!chatId) {
+      return user.id;
     }
 
     const chat = await Chat.findOne({
