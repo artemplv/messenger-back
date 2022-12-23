@@ -5,7 +5,7 @@ const getMessages = (_, socket) => async (chatId) => {
   try {
     const messages = await Message.find({
       chatId: mongoose.Types.ObjectId(chatId),
-    }, '-_id').sort({ createdAt: 'desc' });
+    }, '-readByUsers').sort({ createdAt: 'desc' });
 
     socket.send(JSON.stringify({
       type: 'old messages',

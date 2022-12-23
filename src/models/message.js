@@ -16,9 +16,21 @@ const messageSchema = new Schema({
     type: mongoose.ObjectId,
     ref: 'User',
   },
+  readByUsers: {
+    type: [mongoose.ObjectId],
+    ref: 'User',
+  },
   createdAt: {
     type: Date,
     default: Date.now,
+  },
+});
+
+messageSchema.set('toJSON', {
+  virtuals: true,
+  transform: (_, converted) => {
+    delete converted.__v; // eslint-disable-line no-param-reassign, no-underscore-dangle
+    delete converted._id; // eslint-disable-line no-param-reassign, no-underscore-dangle
   },
 });
 

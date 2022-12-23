@@ -5,11 +5,15 @@ const verifyToken = require('../middlewares/verifyChatSocketToken');
 const {
   get,
   create,
+  read,
+  readAll,
 } = require('../controllers/messages');
 
 const messageTypesHandlers = {
   'get old': get,
   message: create,
+  read: read, // eslint-disable-line object-shorthand
+  'read all': readAll,
 };
 
 const connectSocket = (wss) => wss.on('connection', async (socket, request) => {

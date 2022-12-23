@@ -23,6 +23,7 @@ const createMessage = (wss, socket) => async (chatId, content) => {
       type: 'new message',
       chatId,
       data: {
+        id: newMessage.id,
         content,
         userId,
         createdAt: newMessage.createdAt,
