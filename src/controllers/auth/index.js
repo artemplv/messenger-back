@@ -47,7 +47,11 @@ const authController = {
         });
     } catch (err) {
       console.error(err);
-      res.status(500).send({ message: err });
+      if (err.code === 11000) {
+        res.status(400).send({ message: 'Username is already registered' });
+      } else {
+        res.status(500).send({ message: 'Error' });
+      }
     }
   },
 
@@ -72,7 +76,7 @@ const authController = {
       res.status(401)
         .send({
           accessToken: null,
-          message: 'Invalid Password!',
+          message: 'Wrong password',
         });
       return;
     }
