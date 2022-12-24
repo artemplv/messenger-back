@@ -50,7 +50,7 @@ const authController = {
       if (err.code === 11000) {
         res.status(400).send({ message: 'Username is already registered' });
       } else {
-        res.status(500).send({ message: 'Error' });
+        res.status(500).send({ message: 'Server error' });
       }
     }
   },
@@ -61,43 +61,48 @@ const authController = {
       password,
     } = req.body;
 
-    const user = await User.findOne({ username: login }).exec();
-    if (!user) {
-      res.status(404).send({ message: 'User not found' });
-      return;
-    }
+    try {
+      const user = await User.findOne({ username: login });
+      if (!user) {
+        res.status(404).send({ message: 'User not found' });
+        return;
+      }
 
-    const passwordIsValid = bcrypt.compareSync(
-      password,
-      user.password,
-    );
+      const passwordIsValid = bcrypt.compareSync(
+        password,
+        user.password,
+      );
 
-    if (!passwordIsValid) {
-      res.status(401)
-        .send({
-          accessToken: null,
-          message: 'Wrong password',
-        });
-      return;
-    }
+      if (!passwordIsValid) {
+        res.status(401)
+          .send({
+            accessToken: null,
+            message: 'Wrong password',
+          });
+        return;
+      }
 
-    const token = jwt.sign({
-      id: user.id,
-    }, jwtSecret, {
-      expiresIn: jwtExpiresIn,
-    });
-
-    res.status(200)
-      .send({
-        user: {
-          id: user.id,
-          username: user.username,
-          firstName: user.firstName,
-          lastName: user.lastName,
-        },
-        message: 'Login successfull',
-        accessToken: token,
+      const token = jwt.sign({
+        id: user.id,
+      }, jwtSecret, {
+        expiresIn: jwtExpiresIn,
       });
+
+      res.status(200)
+        .send({
+          user: {
+            id: user.id,
+            username: user.username,
+            firstName: user.firstName,
+            lastName: user.lastName,
+          },
+          message: 'Login successfull',
+          accessToken: token,
+        });
+    } catch (err) {
+      console.error(err);
+      res.status(500).send({ message: 'Server error' });
+    }
   },
 
   getUser: async (req, res) => {

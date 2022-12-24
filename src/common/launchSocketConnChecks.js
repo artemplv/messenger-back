@@ -6,7 +6,11 @@ const launchSocketConnChecks = (wss) => setInterval(() => {
     }
 
     socket.isAlive = false; // eslint-disable-line no-param-reassign
-    socket.ping(null, false, true);
+    try {
+      socket.ping();
+    } catch (err) {
+      console.error(err);
+    }
   });
 }, 30000);
 
