@@ -70,7 +70,6 @@ const getChats = async (req, res) => {
           },
         }, {
           $sort: {
-            lastMessage: -1,
             'lastMessage.createdAt': -1,
             createdAt: -1,
           },
