@@ -21,6 +21,9 @@ const chatSchema = new Schema({
     enum: ['normal', 'ai'],
     default: 'normal',
   },
+  description: {
+    type: String,
+  },
   lastMessage: {
     type: mongoose.ObjectId,
     ref: 'Message',

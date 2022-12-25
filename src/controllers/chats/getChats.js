@@ -62,6 +62,7 @@ const getChats = async (req, res) => {
           $project: {
             _id: 0,
             __v: 0,
+            _aiPrompt: 0,
             'lastMessage._id': 0,
             'lastMessage.__v': 0,
             'lastMessage.readByUsers': 0,

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Chat = require('../../models/chat');
+const User = require('../../models/user');
 const ensureArray = require('../../common/ensureArray');
 
 const removeUsersFromChat = async (req, res) => {
@@ -26,6 +27,14 @@ const removeUsersFromChat = async (req, res) => {
         chat.userIds.pull(mongoose.Types.ObjectId(userId));
       }
     });
+
+    if (chat.type === 'ai') {
+      const aiBot = await User.findOne({ _id: { $in: chat.userIds }, role: 'ai-friend-bot' });
+
+      if (!aiBot) {
+        chat.type = 'normal';
+      }
+    }
 
     await chat.save();
     res.status(200).send();

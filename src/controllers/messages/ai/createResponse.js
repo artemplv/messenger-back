@@ -62,7 +62,9 @@ const createResponse = async (userMessage, chat, clients) => {
       return;
     }
 
-    const bot = await User.findOne({ role: 'ai-friend-bot' });
+    const bot = await User.findOne({
+      role: 'ai-friend-bot',
+    });
 
     const message = new Message({
       content: responseMessage,
