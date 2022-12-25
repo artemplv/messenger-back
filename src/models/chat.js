@@ -16,9 +16,18 @@ const chatSchema = new Schema({
     type: mongoose.ObjectId,
     ref: 'User',
   },
+  type: {
+    type: String,
+    enum: ['normal', 'ai'],
+    default: 'normal',
+  },
   lastMessage: {
     type: mongoose.ObjectId,
     ref: 'Message',
+  },
+  _aiPrompt: {
+    type: String,
+    default: '',
   },
   createdAt: {
     type: Date,
@@ -37,6 +46,7 @@ chatSchema.set('toJSON', {
   transform: (_, converted) => {
     delete converted.__v; // eslint-disable-line no-param-reassign, no-underscore-dangle
     delete converted._id; // eslint-disable-line no-param-reassign, no-underscore-dangle
+    delete converted._aiPrompt; // eslint-disable-line no-param-reassign, no-underscore-dangle
   },
 });
 

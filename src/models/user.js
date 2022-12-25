@@ -28,7 +28,7 @@ const userSchema = new Schema({
   },
   role: {
     type: String,
-    enum: ['normal', 'admin'],
+    enum: ['normal', 'admin', 'ai-friend-bot'],
     default: 'normal',
   },
   password: {

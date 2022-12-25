@@ -7,6 +7,7 @@ const config = {
   dbPort: process.env.DB_PORT || '27017',
   dbName: process.env.DB_NAME,
   port: process.env.SERVER_PORT || '8080',
+  openAiApiKey: process.env.OPENAI_API_KEY,
 };
 
 module.exports = config;
