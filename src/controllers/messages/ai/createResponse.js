@@ -14,16 +14,35 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
-const createResponse = async (chat, clients) => {
+const maxPromptLength = 5000;
+
+const createPrompt = (prompt = '', addPart = '') => {
+  const newPrompt = prompt + addPart;
+
+  if (newPrompt.length < maxPromptLength) {
+    return newPrompt;
+  }
+
+  const reducedPrompt = newPrompt.substring(addPart.length);
+
+  const regex = /\[(friend|user)\]:/i;
+  const indexToCutFrom = reducedPrompt.search(regex);
+
+  return reducedPrompt.substring(indexToCutFrom);
+};
+
+const createResponse = async (userMessage, chat, clients) => {
+  const newPrompt = createPrompt(chat._aiPrompt, `[USER]:${userMessage}[FRIEND]:`);
+
   try {
     const response = await openai.createCompletion({
       model: 'text-davinci-003',
-      prompt: chat._aiPrompt,
-      temperature: 0.5,
-      max_tokens: 60,
+      prompt: newPrompt,
+      temperature: 0.7,
+      max_tokens: 150,
       top_p: 1,
       frequency_penalty: 0.5,
-      presence_penalty: 0.4,
+      presence_penalty: 0.65,
       stop: ['[USER]:', '[FRIEND]:'],
     });
 
@@ -54,7 +73,8 @@ const createResponse = async (chat, clients) => {
     const newMessage = await message.save();
 
     chat.lastMessage = newMessage.id; // eslint-disable-line no-param-reassign
-    chat._aiPrompt = `${chat._aiPrompt}${newMessage.content}`; // eslint-disable-line no-param-reassign
+    // eslint-disable-next-line no-param-reassign
+    chat._aiPrompt = createPrompt(newPrompt, newMessage.content);
 
     const dataToSend = {
       type: 'new message',

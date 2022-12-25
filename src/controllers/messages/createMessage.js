@@ -45,8 +45,7 @@ const createMessage = (wss, socket) => async (chatId, content) => {
     chat = await chat.save();
 
     if (chat.type === 'ai') {
-      chat._aiPrompt = `${chat._aiPrompt || ''}[USER]:${newMessage.content}[FRIEND]:`;
-      createAiResponse(chat, chatClients);
+      createAiResponse(newMessage.content, chat, chatClients);
     }
   } catch (err) {
     console.error(err);
