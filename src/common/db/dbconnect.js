@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
-const config = require('../config/config');
+const config = require('../../config/config');
+
+const addDefaultDocuments = require('./addDefaultDocuments');
 
 const {
   dbUser,
@@ -21,6 +23,13 @@ const dbconnect = async () => {
     console.info('connected to db');
   } catch (error) {
     console.error('db connection error:', error);
+  }
+
+  try {
+    await addDefaultDocuments();
+    console.info('Default documents synced with database');
+  } catch (error) {
+    console.error('Failed syncing default documents');
   }
 };
 

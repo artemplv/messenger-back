@@ -9,7 +9,7 @@ const app = express();
 const server = http.createServer(app);
 
 const config = require('./config/config');
-const dbconnect = require('./common/dbconnect');
+const dbconnect = require('./common/db/dbconnect');
 const connectSocket = require('./common/connectSocket');
 const launchSocketConnChecks = require('./common/launchSocketConnChecks');
 const routes = require('./routes');
