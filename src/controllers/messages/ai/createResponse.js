@@ -38,11 +38,11 @@ const createResponse = async (userMessage, chat, clients) => {
     const response = await openai.createCompletion({
       model: 'text-davinci-003',
       prompt: newPrompt,
-      temperature: 0.7,
+      temperature: 0.8,
       max_tokens: 150,
       top_p: 1,
       frequency_penalty: 0.5,
-      presence_penalty: 0.65,
+      presence_penalty: 0.7,
       stop: ['[USER]:', '[FRIEND]:'],
     });
 

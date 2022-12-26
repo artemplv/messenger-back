@@ -20,6 +20,11 @@ const messageSchema = new Schema({
     type: [mongoose.ObjectId],
     ref: 'User',
   },
+  contentType: {
+    type: String,
+    enum: ['text', 'image'],
+    default: 'text',
+  },
   createdAt: {
     type: Date,
     default: Date.now,

@@ -4,6 +4,8 @@ const bcrypt = require('bcryptjs');
 const User = require('../../models/user');
 const config = require('../../config/config');
 
+const createDefaultChats = require('./createDefaultChats');
+
 const {
   jwtSecret,
   jwtExpiresIn,
@@ -33,6 +35,8 @@ const authController = {
       }, jwtSecret, {
         expiresIn: jwtExpiresIn,
       });
+
+      await createDefaultChats(newUser);
 
       res.status(200)
         .send({
