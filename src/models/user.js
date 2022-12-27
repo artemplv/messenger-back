@@ -26,6 +26,12 @@ const userSchema = new Schema({
     type: String,
     trim: true,
   },
+  avatar: {
+    type: String,
+  },
+  _avatarOriginal: {
+    type: String,
+  },
   role: {
     type: String,
     enum: ['normal', 'admin', 'ai-friend-bot'],
@@ -46,6 +52,7 @@ userSchema.set('toJSON', {
   transform: (_, converted) => {
     delete converted.__v; // eslint-disable-line no-param-reassign, no-underscore-dangle
     delete converted._id; // eslint-disable-line no-param-reassign, no-underscore-dangle
+    delete converted._avatarOriginal; // eslint-disable-line no-param-reassign, no-underscore-dangle
   },
 });
 

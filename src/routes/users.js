@@ -4,6 +4,7 @@ const asyncHandler = require('express-async-handler');
 const router = express.Router();
 
 const usersController = require('../controllers/users');
+const uploadMiddleware = require('../middlewares/uploadMiddleware');
 
 const path = '/user';
 
@@ -11,6 +12,13 @@ router
   .route(`${path}/profile`)
   .put(
     asyncHandler(usersController.update),
+  );
+
+router
+  .route(`${path}/avatar`)
+  .put(
+    uploadMiddleware,
+    asyncHandler(usersController.uploadAvatar),
   );
 
 router

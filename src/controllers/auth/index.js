@@ -114,7 +114,7 @@ const authController = {
       user,
     } = req;
 
-    const fieldsToSelect = 'id firstName lastName username email phone';
+    const fieldsToSelect = 'id firstName lastName username email phone avatar';
 
     try {
       const userData = await User.findById(user.id, fieldsToSelect);
