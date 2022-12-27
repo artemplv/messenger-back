@@ -43,12 +43,37 @@ const getChats = async (req, res) => {
             ],
           },
         }, {
+          // added temporarily in order to show first interlocuter's profile image as a chat avatar
+          $lookup: {
+            from: 'users',
+            localField: 'userIds',
+            foreignField: '_id',
+            as: 'users',
+            pipeline: [
+              {
+                $match: {
+                  _id: {
+                    $ne: mongoose.Types.ObjectId(user.id),
+                  },
+                },
+              },
+            ],
+          },
+          //
+        }, {
           $set: {
             lastMessage: {
               $arrayElemAt: [
                 '$lastMessage', 0,
               ],
             },
+            // added temporarily in order to show first interlocuter profile image as a chat avatar
+            interlocuter: {
+              $first: [
+                '$users',
+              ],
+            },
+            //
           },
         }, {
           $addFields: {
@@ -57,6 +82,7 @@ const getChats = async (req, res) => {
             unreadMessagesCount: {
               $size: '$unreadMessages',
             },
+            avatar: '$interlocuter.avatar', // temporary solution
           },
         }, {
           $project: {
@@ -68,6 +94,8 @@ const getChats = async (req, res) => {
             'lastMessage.readByUsers': 0,
             'lastMessage.chatId': 0,
             unreadMessages: 0,
+            users: 0,
+            interlocuter: 0,
           },
         }, {
           $sort: {
