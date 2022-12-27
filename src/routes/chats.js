@@ -4,6 +4,8 @@ const asyncHandler = require('express-async-handler');
 const router = express.Router();
 
 const verifyChatAccess = require('../middlewares/verifyChatAccess');
+const uploadMiddleware = require('../middlewares/uploadMiddleware');
+
 const chatsController = require('../controllers/chats');
 
 const path = '/chats';
@@ -24,6 +26,16 @@ router
   )
   .get(
     asyncHandler(chatsController.getById),
+  );
+
+router
+  .route(`${path}/:chatId/images`)
+  .all(
+    verifyChatAccess,
+  )
+  .put(
+    uploadMiddleware,
+    asyncHandler(chatsController.uploadImage),
   );
 
 router

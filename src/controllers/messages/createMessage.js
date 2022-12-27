@@ -3,13 +3,14 @@ const Chat = require('../../models/chat');
 
 const createAiResponse = require('./ai/createResponse');
 
-const createMessage = (wss, socket) => async (chatId, content) => {
+const createMessage = (wss, socket) => async (chatId, content, contentType = 'text') => {
   const {
     userId,
   } = socket;
 
   const message = new Message({
     content,
+    contentType,
     chatId,
     userId,
   });
@@ -21,13 +22,16 @@ const createMessage = (wss, socket) => async (chatId, content) => {
 
     chat.lastMessage = newMessage.id;
 
+    const shouldBeHandledByAi = chat.type === 'ai' && contentType === 'text';
+
     const dataToSend = {
       type: 'new message',
       chatId,
-      pauseChat: chat.type === 'ai',
+      pauseChat: shouldBeHandledByAi,
       data: {
         id: newMessage.id,
         content,
+        contentType: newMessage.contentType,
         userId,
         createdAt: newMessage.createdAt,
       },
@@ -44,7 +48,7 @@ const createMessage = (wss, socket) => async (chatId, content) => {
 
     chat = await chat.save();
 
-    if (chat.type === 'ai') {
+    if (shouldBeHandledByAi) {
       createAiResponse(newMessage.content, chat, chatClients);
     }
   } catch (err) {

@@ -42,6 +42,7 @@ const connectSocket = (wss) => wss.on('connection', async (socket, request) => {
       chatId,
       type,
       content,
+      contentType,
     } = JSON.parse(message);
 
     const canAccessChat = await verifyToken(token, chatId);
@@ -53,7 +54,7 @@ const connectSocket = (wss) => wss.on('connection', async (socket, request) => {
     const handler = messageTypesHandlers[type];
 
     if (handler) {
-      handler(wss, socket)(chatId, content);
+      handler(wss, socket)(chatId, content, contentType);
     }
   });
 });

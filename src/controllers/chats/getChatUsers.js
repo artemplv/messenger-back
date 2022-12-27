@@ -7,7 +7,7 @@ const getChatUsers = async (req, res) => {
     },
   } = req;
 
-  const userFieldsToSelect = 'id firstName lastName username';
+  const userFieldsToSelect = 'id firstName lastName username avatar';
 
   try {
     const chat = await Chat.findById(chatId).populate('userIds', userFieldsToSelect);
