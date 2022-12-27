@@ -1,5 +1,4 @@
 const Chat = require('../../models/chat');
-const Message = require('../../models/message');
 
 const getChat = async (req, res) => {
   const {
@@ -14,14 +13,13 @@ const getChat = async (req, res) => {
 
   try {
     const chat = await Chat.findById(chatId).populate('users', userFieldsToSelect);
-    const unreadMessagesCount = await Message.count({
-      chatId,
-      readByUsers: { $nin: [user.id] },
-    });
+
+    // temporary chat avatar solution
+    const chatAvatar = chat?.users.find((chatUser) => chatUser.id !== user.id)?.avatar;
 
     res.status(200).send({
       ...chat.toJSON(),
-      unreadMessagesCount,
+      avatar: chatAvatar,
     });
   } catch (err) {
     console.error(err);
