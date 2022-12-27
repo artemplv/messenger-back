@@ -12,6 +12,11 @@ const config = {
   jwtExpiresIn: process.env.JWT_EXIPRES_IN || '7d',
   //
   openAiApiKey: process.env.OPENAI_API_KEY,
+  //
+  storageCloudName: process.env.CLOUDINARY_CLOUD_NAME,
+  storageApiKey: process.env.CLOUDINARY_API_KEY,
+  storageApiSecret: process.env.CLOUDINARY_API_SECRET,
+  storageFolder: process.env.CLOUDINARY_TARGET_FOLDER,
 };
 
 module.exports = config;
