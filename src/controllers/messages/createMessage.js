@@ -1,7 +1,9 @@
 const Message = require('../../models/message');
 const Chat = require('../../models/chat');
+const User = require('../../models/user');
 
 const createAiResponse = require('./ai/createResponse');
+const sendTgMessage = require('./tg/sendTgMessage');
 
 const createMessage = (wss, socket) => async (chatId, content, contentType = 'text') => {
   const {
@@ -48,9 +50,22 @@ const createMessage = (wss, socket) => async (chatId, content, contentType = 'te
 
     chat = await chat.save();
 
+    // create Ai response
     if (shouldBeHandledByAi) {
       createAiResponse(newMessage.content, chat, chatClients);
     }
+
+    // send a message to admin's TG if the message is for them
+    const adminUser = await User.findOne({ role: 'admin' });
+    const messageFromAdmin = adminUser.id === userId;
+    if (messageFromAdmin) {
+      return;
+    }
+    const hasAdminInChat = chat.userIds.includes(adminUser.id);
+    if (hasAdminInChat) {
+      sendTgMessage(userId, chatId, newMessage);
+    }
+    //
   } catch (err) {
     console.error(err);
   }
