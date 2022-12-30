@@ -1,0 +1,28 @@
+const express = require('express');
+const asyncHandler = require('express-async-handler');
+
+const authController = require('../controllers/auth');
+const verifyToken = require('../middlewares/verifyToken');
+
+const router = express.Router();
+
+router
+  .route('/signup')
+  .post(
+    asyncHandler(authController.signup),
+  );
+
+router
+  .route('/signin')
+  .post(
+    asyncHandler(authController.signin),
+  );
+
+router
+  .route('/user')
+  .get(
+    verifyToken,
+    asyncHandler(authController.getUser),
+  );
+
+module.exports = router;
