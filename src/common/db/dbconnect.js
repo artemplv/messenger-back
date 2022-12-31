@@ -7,12 +7,13 @@ const {
   dbUser,
   dbPassword,
   dbHost,
-  dbPort,
+  // dbPort,
   dbName,
 } = config;
 
-const connectionOptions = 'authMechanism=DEFAULT&authSource=admin';
-const connectionString = `mongodb://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/${dbName}?${connectionOptions}`;
+// const connectionOptions = 'authMechanism=DEFAULT&authSource=admin';
+// const connectionString = `mongodb://${dbUser}:${dbPassword}@${dbHost}:${dbPort}/${dbName}?${connectionOptions}`;
+const connectionString = `mongodb+srv://${dbUser}:${dbPassword}@${dbHost}/${dbName}`;
 
 const dbconnect = async () => {
   try {

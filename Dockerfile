@@ -8,7 +8,6 @@ RUN npm install
 
 COPY . /opt/messenger-back
 
-ARG SERVER_PORT
-EXPOSE ${SERVER_PORT}
+EXPOSE $PORT
 
 CMD ["npm", "run", "start"]
