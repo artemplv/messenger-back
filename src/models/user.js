@@ -5,9 +5,11 @@ const { Schema } = mongoose;
 const userSchema = new Schema({
   firstName: {
     type: String,
+    trim: true,
     required: [true, 'firstname not provided '],
   },
   lastName: {
+    trim: true,
     type: String,
   },
   username: {
@@ -39,6 +41,7 @@ const userSchema = new Schema({
   },
   password: {
     type: String,
+    trim: true,
     required: true,
   },
   createdAt: {

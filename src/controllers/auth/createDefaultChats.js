@@ -24,7 +24,7 @@ const createDefaultChats = async (newUser) => {
 
     //
     const adminMessage = new Message({
-      content: `Hey ${newUser.firstName}, welcome!${process.env.SIGNUP_GREETINGS_MESSAGE || ''}`,
+      content: `Hey ${newUser.firstName}, welcome! ${process.env.SIGNUP_GREETINGS_MESSAGE || ''}`,
       chatId: adminChat.id,
       userId: adminUser.id,
     });
