@@ -11,7 +11,7 @@ const server = http.createServer(app);
 const config = require('./config/config');
 const dbconnect = require('./common/db/dbconnect');
 const connectSocket = require('./common/connectSocket');
-// const launchSocketConnChecks = require('./common/launchSocketConnChecks');
+const launchSocketConnChecks = require('./common/launchSocketConnChecks');
 const routes = require('./routes');
 
 const verifyToken = require('./middlewares/verifyToken');
@@ -29,7 +29,7 @@ const wss = new WebSocket.Server({
 
 dbconnect();
 connectSocket(wss);
-// launchSocketConnChecks(wss);
+launchSocketConnChecks(wss);
 
 app.use(express.json());
 app.use(express.urlencoded({

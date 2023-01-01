@@ -12,6 +12,6 @@ const launchSocketConnChecks = (wss) => setInterval(() => {
       console.error(err);
     }
   });
-}, 30000);
+}, 12000);
 
 module.exports = launchSocketConnChecks;
