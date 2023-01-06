@@ -5,6 +5,7 @@ const addUsersToChat = require('./addUsersToChat');
 const getChatUsers = require('./getChatUsers');
 const removeUsersFromChat = require('./removeUsersFromChat');
 const uploadImage = require('./uploadImage');
+const resetChatPrompt = require('./resetChatPrompt');
 
 const chatsController = {
   create: createChat,
@@ -14,6 +15,7 @@ const chatsController = {
   getUsers: getChatUsers,
   removeUsers: removeUsersFromChat,
   uploadImage,
+  resetChatPrompt,
 };
 
 module.exports = chatsController;

@@ -53,4 +53,13 @@ router
     asyncHandler(chatsController.removeUsers),
   );
 
+router
+  .route(`${path}/:chatId/prompt`)
+  .all(
+    verifyChatAccess,
+  )
+  .delete(
+    asyncHandler(chatsController.resetChatPrompt),
+  );
+
 module.exports = router;
