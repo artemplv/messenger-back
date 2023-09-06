@@ -3,6 +3,7 @@ const asyncHandler = require('express-async-handler');
 
 const authController = require('../controllers/auth');
 const verifyToken = require('../middlewares/verifyToken');
+const addDemoData = require('../middlewares/addDemoData');
 
 const router = express.Router();
 
@@ -23,6 +24,13 @@ router
   .get(
     verifyToken,
     asyncHandler(authController.getUser),
+  );
+
+router
+  .route('/demo')
+  .post(
+    addDemoData,
+    asyncHandler(authController.signup),
   );
 
 module.exports = router;
