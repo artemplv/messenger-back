@@ -6,6 +6,8 @@ const config = require('../../config/config');
 
 const createDefaultChats = require('./createDefaultChats');
 
+const telegramNotifications = require('../../common/telegramNotifications');
+
 const {
   jwtSecret,
   jwtExpiresIn,
@@ -49,13 +51,19 @@ const authController = {
           message: 'Signup successfull',
           accessToken: token,
         });
+
+      // notify admin about new signup
+      telegramNotifications.newUser(newUser);
     } catch (err) {
       console.error(err);
+
       if (err.code === 11000) {
         res.status(400).send({ message: 'Username is already registered' });
       } else {
         res.status(500).send({ message: 'Server error' });
       }
+
+      telegramNotifications.signupFail(user, err);
     }
   },
 

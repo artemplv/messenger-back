@@ -22,15 +22,17 @@ const createDefaultChats = async (newUser) => {
       type: 'ai',
     });
 
+    const newUserFullName = `${newUser.firstName} ${newUser.lastName || ''}`.trim();
+
     //
     const adminMessage = new Message({
-      content: `Hey ${newUser.firstName}, welcome!${process.env.SIGNUP_GREETINGS_MESSAGE || ''}`,
+      content: `Hey ${newUserFullName}, welcome!${process.env.SIGNUP_GREETINGS_MESSAGE || ''}`,
       chatId: adminChat.id,
       userId: adminUser.id,
     });
 
     const aiFriendMessage = new Message({
-      content: `Hi ${newUser.firstName}! I'm an AI developed by OpenAI. Send me any message, let's start chatting about anything!`,
+      content: `Hi ${newUserFullName}! I'm an AI developed by OpenAI. Send me any message, let's start chatting about anything!`,
       chatId: aiFriendChat.id,
       userId: aiFriendBot.id,
     });
