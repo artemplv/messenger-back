@@ -1,6 +1,6 @@
 # messenger-back
 
-Backend for [Messenger Web App](https://github.com/artemplv/messenger-web-app).
+Backend for [Messenger Web App](https://github.com/artemplv/messenger-web-app). Please refer to its Readme for more details.
 
 Built with Express. Using Docker.
 
