@@ -1,6 +1,6 @@
-# messenger-back
+# quickchat-api
 
-Backend for [Messenger Web App](https://github.com/artemplv/messenger-web-app). Please refer to its Readme for more details.
+API server for [QuickChat AI](https://github.com/artemplv/QuickChat-AI). Please refer to its Readme for more details.
 
 Built with Express. Using Docker.
 
