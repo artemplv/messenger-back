@@ -32,7 +32,7 @@ const createDefaultChats = async (newUser) => {
     });
 
     const aiFriendMessage = new Message({
-      content: `Hi ${newUserFullName}! I'm an AI developed by OpenAI. Send me any message, let's start chatting about anything!`,
+      content: `Hi ${newUserFullName}! I'm an AI developed by OpenAI. Send me a message, let's start chatting about anything!`,
       chatId: aiFriendChat.id,
       userId: aiFriendBot.id,
     });
